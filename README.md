@@ -79,7 +79,7 @@ that exercises the full pipeline end-to-end and asserts a real PNG is written.
 src/
   main.ts                    CLI bootstrap (nest-commander)
   app.module.ts              Dependency-injection wiring
-  cli/chart.command.ts       `chart <url> [-o path]` command
+  cli/chart/chart.command.ts `chart <url> [-o path]` command
   core/
     chart-pipeline.service.ts        Orchestrates the stages
     fetcher/page-fetcher.service.ts  URL → HTML

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ChartCommand } from './cli/chart.command';
+import { ChartCommand } from './cli/chart/chart.command';
 import { ChartPipelineService } from './core/chart-pipeline.service';
 import { PageFetcherService } from './core/fetcher/page-fetcher.service';
 import { PngWriterService } from './core/chart/png-writer.service';

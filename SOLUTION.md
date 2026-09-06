@@ -36,7 +36,7 @@ flowchart LR
 | Render | `core/chart/svg-chart.renderer.ts` |
 | Rasterise | `core/chart/png-writer.service.ts` (sharp) |
 | Orchestrate | `core/chart-pipeline.service.ts` |
-| CLI | `cli/chart.command.ts` (nest-commander) |
+| CLI | `cli/chart/chart.command.ts` (nest-commander) |
 
 ---
 

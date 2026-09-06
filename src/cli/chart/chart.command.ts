@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { Logger } from '@nestjs/common';
-import { ChartPipelineService } from '../core/chart-pipeline.service';
-import { slugFromUrl } from '../core/page-name.util';
+import { ChartPipelineService } from '../../core/chart-pipeline.service';
+import { slugFromUrl } from '../../core/page-name.util';
 import { ChartCommandOptions } from './chart.command.types';
 
 /**
