@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 /**
- * Fetches raw HTML for a URL.
- *
- * Uses the Node global `fetch` (Node 18+). Kept as a one-method service so the
- * network boundary can be mocked in tests, keeping the rest of the pipeline
- * deterministic and offline.
+ * Fetches raw HTML for a URL via the Node global `fetch` (Node 18+).
+ * Isolated as a service so the network boundary can be mocked in tests.
  */
 @Injectable()
 export class PageFetcherService {

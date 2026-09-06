@@ -10,12 +10,9 @@ export interface ChartOptions {
 const DEFAULTS: ChartOptions = { width: 900, height: 500, title: 'Numeric column' };
 
 /**
- * Renders a {@link NumericSeries} into a standalone SVG line chart string.
- *
- * This is a pure, dependency-free function (no canvas, no DOM): given the same
- * input it always returns the same SVG markup, which makes it fast and reliable
- * to unit-test. Rasterisation to PNG is a separate concern
- * ({@link PngWriterService}).
+ * Renders a {@link NumericSeries} into a standalone SVG line-chart string.
+ * Pure and dependency-free (no canvas/DOM), so it is deterministic to test;
+ * PNG rasterisation is separate ({@link PngWriterService}).
  */
 @Injectable()
 export class SvgChartRenderer {

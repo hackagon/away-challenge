@@ -15,12 +15,8 @@ interface ColumnCandidate {
 }
 
 /**
- * Chooses the best numeric column across all extracted tables to plot.
- *
- * "Best" = the column with the most parseable numeric values (ties broken by
- * the higher numeric ratio). This is a pragmatic heuristic that works well for
- * the record-progression style tables in the brief without hard-coding column
- * names — see SOLUTION.md, "How the numeric column is chosen".
+ * Picks the numeric column with the most parseable values across all tables
+ * (ties broken by the higher ratio). See SOLUTION.md for the heuristic.
  */
 @Injectable()
 export class NumericColumnSelectorService {

@@ -48,9 +48,8 @@ describe('TableParserService', () => {
   });
 
   it('expands rowspan so later rows keep column alignment', () => {
-    // The "Mark" of the 2nd row is merged with the 1st via rowspan=2, so the
-    // 2nd <tr> only lists Athlete. Without expansion, "Bob" would land in the
-    // Mark column. With expansion, both rows share Mark "1.85".
+    // Mark spans 2 rows, so the 2nd <tr> lists only Athlete. Without expansion
+    // "Bob" would land in the Mark column; with it, both rows share "1.85".
     const html = `
       <table>
         <tr><th>Mark</th><th>Athlete</th></tr>

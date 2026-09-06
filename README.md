@@ -86,7 +86,7 @@ test/features/               BDD feature + step definitions
 |---------|-------------|
 | `npm run chart -- <url>` | Run the CLI in dev (ts-node) |
 | `npm run build` | Compile to `dist/` |
-| `npm start` | Run the compiled CLI |
+| `npm start` | Run the compiled CLI (after `npm run build`) |
 | `npm test` | Run unit + BDD tests |
 | `npm run test:cov` | Tests with coverage |
 | `npm run lint` | ESLint (with `--fix`) |

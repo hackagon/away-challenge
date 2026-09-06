@@ -7,11 +7,7 @@ import { NumericColumnSelectorService } from './core/parser/numeric-column-selec
 import { SvgChartRenderer } from './core/chart/svg-chart.renderer';
 import { PngWriterService } from './core/chart/png-writer.service';
 
-/**
- * Root module wiring the CLI command to the pipeline and its collaborators.
- * Nest's DI container manages construction, which keeps every unit testable in
- * isolation (each dependency can be swapped for a mock).
- */
+/** Root module: DI wiring for the CLI command, pipeline and collaborators. */
 @Module({
   providers: [
     ChartCommand,

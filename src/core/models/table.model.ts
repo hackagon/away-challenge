@@ -1,15 +1,6 @@
-/**
- * Domain models shared across the pipeline.
- *
- * These are intentionally plain data structures (no behaviour) so that every
- * stage of the pipeline can be unit-tested in isolation with simple fixtures.
- */
+/** Plain data models shared across the pipeline stages. */
 
-/**
- * A table extracted from an HTML page, normalised into headers + string rows.
- * Cells are kept as raw strings at this stage; numeric interpretation happens
- * later in the {@link NumericColumnSelectorService}.
- */
+/** A table normalised into headers + raw string rows (numbers parsed later). */
 export interface ExtractedTable {
   /** Column header labels, in order. May be empty if the table had no header row. */
   headers: string[];
@@ -17,10 +8,7 @@ export interface ExtractedTable {
   rows: string[][];
 }
 
-/**
- * The numeric column chosen for plotting, together with the label used to title
- * the chart and the parsed values in row order.
- */
+/** The chosen numeric column: its label plus parsed values in row order. */
 export interface NumericSeries {
   /** Human-readable column label (from the header, or a generated fallback). */
   label: string;

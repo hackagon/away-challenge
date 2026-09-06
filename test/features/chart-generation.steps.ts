@@ -14,9 +14,8 @@ import { PipelineResult } from '../../src/core/chart-pipeline.service';
 const feature = loadFeature(join(__dirname, 'chart-generation.feature'));
 
 /**
- * BDD suite: exercises the whole pipeline (parse → select → render → write) with
- * only the network boundary faked. SVG rendering and PNG rasterisation run for
- * real, so a passing scenario proves an actual image file is produced.
+ * BDD suite: runs the whole pipeline with only the network faked. SVG + PNG
+ * run for real, so a green scenario proves a real image file was written.
  */
 defineFeature(feature, (test) => {
   let pipeline: ChartPipelineService;

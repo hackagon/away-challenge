@@ -6,23 +6,15 @@ import { ExtractedTable } from '../models/table.model';
 /**
  * Extracts HTML `<table>` elements into normalised {@link ExtractedTable} data.
  *
- * Kept free of network/file concerns: it takes an HTML string and returns plain
- * data, so it is trivially unit-testable with inline HTML fixtures.
- *
- * The parser handles two pieces of real-world messiness that broke a naive
- * positional read of Wikipedia tables (see SOLUTION.md, "Assumptions"):
- *  - `rowspan` / `colspan` merged cells, which otherwise shift later columns and
- *    let e.g. a date leak into a numeric "height" column;
- *  - inline `<style>`/`<script>` nodes, whose text `.text()` would otherwise
- *    splice into the cell value.
+ * Handles two real-world quirks (see SOLUTION.md): `rowspan`/`colspan` merged
+ * cells (which shift columns and leak e.g. a date into a numeric column) and
+ * inline `<style>`/`<script>` nodes (which pollute a cell's `.text()`).
  */
 @Injectable()
 export class TableParserService {
   /**
-   * Parse every top-level table in the document into headers + rows.
-   *
-   * Prefers Wikipedia's `wikitable` class when present, otherwise falls back to
-   * all `<table>` elements so the tool works on arbitrary pages.
+   * Parse every top-level table into headers + rows. Prefers Wikipedia's
+   * `wikitable` class, else falls back to all `<table>` elements.
    */
   parse(html: string): ExtractedTable[] {
     const $ = cheerio.load(html);
@@ -63,12 +55,9 @@ export class TableParserService {
   }
 
   /**
-   * Build a rectangular string matrix from body rows, expanding `rowspan` and
-   * `colspan` so every logical column lines up across rows.
-   *
-   * Algorithm: walk cells left-to-right, skipping grid positions already claimed
-   * by a span from an earlier cell, and paint each cell's text across all the
-   * (col × row) positions it occupies.
+   * Build a rectangular matrix from body rows, expanding `rowspan`/`colspan` so
+   * columns stay aligned. Walks cells left-to-right, skips positions already
+   * claimed by a span, and paints each cell across the positions it occupies.
    */
   private buildMatrix($: cheerio.CheerioAPI, rows: Element[]): string[][] {
     const matrix: string[][] = [];

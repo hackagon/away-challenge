@@ -3,9 +3,8 @@ import { CommandFactory } from 'nest-commander';
 import { AppModule } from './app.module';
 
 /**
- * CLI entry point. `nest-commander`'s CommandFactory boots a lightweight Nest
- * application context (no HTTP server) and dispatches to the matching command.
- * We limit Nest's own log levels so the CLI output stays clean.
+ * CLI entry point: CommandFactory boots a Nest context (no HTTP server) and
+ * dispatches to the matching command.
  */
 async function bootstrap(): Promise<void> {
   await CommandFactory.run(AppModule, ['warn', 'error', 'log']);

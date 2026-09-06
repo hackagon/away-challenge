@@ -12,13 +12,9 @@ export interface PipelineResult {
 }
 
 /**
- * Orchestrates the end-to-end flow:
- *
- *   URL → fetch HTML → parse tables → select numeric column → render SVG → write PNG
- *
- * Each step is delegated to a single-responsibility collaborator, so this class
- * reads as a high-level description of the algorithm and is covered end-to-end
- * by the BDD feature (with the network + disk boundaries mocked).
+ * Orchestrates the flow: fetch HTML → parse tables → select numeric column →
+ * render SVG → write PNG. Each step is a single-responsibility collaborator;
+ * covered end-to-end by the BDD feature.
  */
 @Injectable()
 export class ChartPipelineService {

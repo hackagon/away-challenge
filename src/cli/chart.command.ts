@@ -9,11 +9,8 @@ interface ChartCommandOptions {
 const DEFAULT_OUTPUT = 'output/chart.png';
 
 /**
- * `wiki-chart chart <url> [-o output.png]`
- *
- * The thin CLI layer: it validates input, delegates all real work to
- * {@link ChartPipelineService}, and turns success/failure into user-friendly
- * console output and exit codes.
+ * `chart <url> [-o output.png]` — thin CLI layer: validate input, delegate to
+ * {@link ChartPipelineService}, map success/failure to output and exit codes.
  */
 @Command({
   name: 'chart',
@@ -39,8 +36,7 @@ export class ChartCommand extends CommandRunner {
 
     try {
       const result = await this.pipeline.generate(url, output);
-      // Deliberately use console.log for the primary success line so it is easy
-      // to consume in scripts, separate from the Nest logger diagnostics.
+      // console.log (not the logger) keeps the result line clean for scripts.
       console.log(
         `✔ Plotted "${result.label}" (${result.pointCount} points) → ${result.outputPath}`,
       );
