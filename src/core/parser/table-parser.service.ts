@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import type { AnyNode, Element } from 'domhandler';
 import { ExtractedTable } from '../models/table.types';
+import { RawCell } from './table-parser.types';
 
 /**
  * Extracts HTML `<table>` elements into normalised {@link ExtractedTable} data.
@@ -90,11 +91,8 @@ export class TableParserService {
   }
 
   /** Read a row's cells with their span metadata (does not apply rowspan yet). */
-  private static expandRow(
-    $: cheerio.CheerioAPI,
-    tr: Element,
-  ): { text: string; colspan: number; rowspan: number }[] {
-    const cells: { text: string; colspan: number; rowspan: number }[] = [];
+  private static expandRow($: cheerio.CheerioAPI, tr: Element): RawCell[] {
+    const cells: RawCell[] = [];
     $(tr)
       .find('th, td')
       .each((_, cell) => {
