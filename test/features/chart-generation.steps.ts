@@ -6,7 +6,7 @@ import { Test } from '@nestjs/testing';
 import { ChartPipelineService } from '../../src/core/chart-pipeline.service';
 import { PageFetcherService } from '../../src/core/fetcher/page-fetcher.service';
 import { PngWriterService } from '../../src/core/chart/png-writer.service';
-import { PipelineResult } from '../../src/core/chart-pipeline.service';
+import { PipelineResult } from '../../src/core/chart-pipeline.types';
 
 const feature = loadFeature(join(__dirname, 'chart-generation.feature'));
 

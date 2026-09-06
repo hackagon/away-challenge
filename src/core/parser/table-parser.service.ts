@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import type { AnyNode, Element } from 'domhandler';
-import { ExtractedTable } from '../models/table.model';
+import { ExtractedTable } from '../models/table.types';
 
 /**
  * Extracts HTML `<table>` elements into normalised {@link ExtractedTable} data.

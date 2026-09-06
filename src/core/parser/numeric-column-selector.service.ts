@@ -1,17 +1,11 @@
-import { ExtractedTable, NumericSeries } from '../models/table.model';
+import { ExtractedTable, NumericSeries } from '../models/table.types';
 import { parseNumericCell } from './number.util';
+import { ColumnCandidate } from './numeric-column-selector.types';
 
 /** Minimum share of a column's cells that must be numeric to consider it. */
 const NUMERIC_RATIO_THRESHOLD = 0.6;
 /** Minimum number of points needed to make a meaningful chart. */
 const MIN_POINTS = 2;
-
-interface ColumnCandidate {
-  label: string;
-  values: number[];
-  /** Fraction of body rows that parsed to a number (0..1). */
-  ratio: number;
-}
 
 /**
  * Picks a numeric column to plot. By default it auto-detects the column with

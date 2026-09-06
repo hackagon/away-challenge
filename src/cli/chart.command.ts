@@ -2,11 +2,7 @@ import { Command, CommandRunner, Option } from 'nest-commander';
 import { Logger } from '@nestjs/common';
 import { ChartPipelineService } from '../core/chart-pipeline.service';
 import { slugFromUrl } from '../core/page-name.util';
-
-interface ChartCommandOptions {
-  output?: string;
-  column?: string;
-}
+import { ChartCommandOptions } from './chart.command.types';
 
 /**
  * `chart <url> [-o output.png] [-c column]` — thin CLI layer: validate input,

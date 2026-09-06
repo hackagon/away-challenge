@@ -5,17 +5,7 @@ import { NumericColumnSelectorService } from './parser/numeric-column-selector.s
 import { SvgChartRenderer } from './chart/svg-chart.renderer';
 import { PngWriterService } from './chart/png-writer.service';
 import { pageTitleFromUrl } from './page-name.util';
-
-export interface PipelineResult {
-  outputPath: string;
-  label: string;
-  pointCount: number;
-}
-
-export interface GenerateOptions {
-  /** Override the auto-detected column, matched by header (case-insensitive). */
-  column?: string;
-}
+import { GenerateOptions, PipelineResult } from './chart-pipeline.types';
 
 /**
  * Orchestrates the flow: fetch HTML → parse tables → select numeric column →

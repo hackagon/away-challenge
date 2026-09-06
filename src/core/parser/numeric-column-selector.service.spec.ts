@@ -1,5 +1,5 @@
 import { NumericColumnSelectorService } from './numeric-column-selector.service';
-import { ExtractedTable } from '../models/table.model';
+import { ExtractedTable } from '../models/table.types';
 
 describe('NumericColumnSelectorService', () => {
   it('picks the numeric column and ignores text columns', () => {

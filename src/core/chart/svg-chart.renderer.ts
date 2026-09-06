@@ -1,10 +1,5 @@
-import { NumericSeries } from '../models/table.model';
-
-export interface ChartOptions {
-  width: number;
-  height: number;
-  title: string;
-}
+import { NumericSeries } from '../models/table.types';
+import { ChartOptions } from './svg-chart.types';
 
 const DEFAULTS: ChartOptions = { width: 900, height: 500, title: 'Numeric column' };
 

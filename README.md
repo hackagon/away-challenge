@@ -88,6 +88,7 @@ src/
     parser/numeric-column-selector.service.ts  Pick the numeric column
     chart/svg-chart.renderer.ts      Data → SVG (pure)
     chart/png-writer.service.ts      SVG → PNG (sharp)
+    **/*.types.ts                    Interfaces (colocated per module)
 test/features/               BDD feature + step definitions
 ```
 
