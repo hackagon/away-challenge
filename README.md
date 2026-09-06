@@ -1,5 +1,7 @@
 # Wikipedia Table Charter
 
+[![CI](https://github.com/hackagon/away-challenge/actions/workflows/ci.yml/badge.svg)](https://github.com/hackagon/away-challenge/actions/workflows/ci.yml)
+
 A command-line tool that reads a web page (e.g. a Wikipedia article), finds a
 table, detects a **numeric column**, and plots it to a **PNG image**.
 
