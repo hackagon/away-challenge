@@ -22,9 +22,6 @@ export class ChartPipelineService {
 
   constructor(
     private readonly fetcher: PageFetcherService,
-    private readonly tableParser: TableParserService,
-    private readonly columnSelector: NumericColumnSelectorService,
-    private readonly renderer: SvgChartRenderer,
     private readonly pngWriter: PngWriterService,
   ) {}
 
@@ -32,16 +29,16 @@ export class ChartPipelineService {
     this.logger.log(`Fetching ${url}`);
     const html = await this.fetcher.fetchHtml(url);
 
-    const tables = this.tableParser.parse(html);
+    const tables = TableParserService.parse(html);
     this.logger.log(`Found ${tables.length} table(s)`);
     if (tables.length === 0) {
       throw new Error('No tables found on the page.');
     }
 
-    const series = this.columnSelector.select(tables);
+    const series = NumericColumnSelectorService.select(tables);
     this.logger.log(`Selected column "${series.label}" with ${series.values.length} value(s)`);
 
-    const svg = this.renderer.render(series);
+    const svg = SvgChartRenderer.render(series);
     const absolutePath = await this.pngWriter.write(svg, outputPath);
     this.logger.log(`Wrote chart to ${absolutePath}`);
 

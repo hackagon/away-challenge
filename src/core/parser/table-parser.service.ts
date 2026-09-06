@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import type { AnyNode, Element } from 'domhandler';
 import { ExtractedTable } from '../models/table.model';
@@ -9,14 +8,15 @@ import { ExtractedTable } from '../models/table.model';
  * Handles two real-world quirks (see SOLUTION.md): `rowspan`/`colspan` merged
  * cells (which shift columns and leak e.g. a date into a numeric column) and
  * inline `<style>`/`<script>` nodes (which pollute a cell's `.text()`).
+ *
+ * Pure and stateless, so it is a static utility class (no DI needed).
  */
-@Injectable()
 export class TableParserService {
   /**
    * Parse every top-level table into headers + rows. Prefers Wikipedia's
    * `wikitable` class, else falls back to all `<table>` elements.
    */
-  parse(html: string): ExtractedTable[] {
+  static parse(html: string): ExtractedTable[] {
     const $ = cheerio.load(html);
 
     const wikitables = $('table.wikitable');
@@ -59,7 +59,7 @@ export class TableParserService {
    * columns stay aligned. Walks cells left-to-right, skips positions already
    * claimed by a span, and paints each cell across the positions it occupies.
    */
-  private buildMatrix($: cheerio.CheerioAPI, rows: Element[]): string[][] {
+  private static buildMatrix($: cheerio.CheerioAPI, rows: Element[]): string[][] {
     const matrix: string[][] = [];
 
     rows.forEach((tr, rowIdx) => {
@@ -90,7 +90,7 @@ export class TableParserService {
   }
 
   /** Read a row's cells with their span metadata (does not apply rowspan yet). */
-  private expandRow(
+  private static expandRow(
     $: cheerio.CheerioAPI,
     tr: Element,
   ): { text: string; colspan: number; rowspan: number }[] {
@@ -107,13 +107,13 @@ export class TableParserService {
     return cells;
   }
 
-  private spanAttr($: cheerio.CheerioAPI, el: AnyNode, name: 'colspan' | 'rowspan'): number {
+  private static spanAttr($: cheerio.CheerioAPI, el: AnyNode, name: 'colspan' | 'rowspan'): number {
     const raw = parseInt($(el).attr(name) ?? '1', 10);
     return Number.isFinite(raw) && raw > 0 ? raw : 1;
   }
 
   /** Collapse whitespace and trim a cell's text, ignoring style/script nodes. */
-  private cellText($: cheerio.CheerioAPI, el: AnyNode): string {
+  private static cellText($: cheerio.CheerioAPI, el: AnyNode): string {
     return $(el).clone().find('style, script').remove().end().text().replace(/\s+/g, ' ').trim();
   }
 }

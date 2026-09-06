@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { ExtractedTable, NumericSeries } from '../models/table.model';
 import { parseNumericCell } from './number.util';
 
@@ -17,13 +16,14 @@ interface ColumnCandidate {
 /**
  * Picks the numeric column with the most parseable values across all tables
  * (ties broken by the higher ratio). See SOLUTION.md for the heuristic.
+ *
+ * Pure and stateless, so it is a static utility class (no DI needed).
  */
-@Injectable()
 export class NumericColumnSelectorService {
   /**
    * @throws Error when no column across any table is sufficiently numeric.
    */
-  select(tables: ExtractedTable[]): NumericSeries {
+  static select(tables: ExtractedTable[]): NumericSeries {
     const candidates = tables.flatMap((table) => this.candidatesFor(table));
 
     const viable = candidates.filter(
@@ -44,7 +44,7 @@ export class NumericColumnSelectorService {
   }
 
   /** Build one candidate per column of a single table. */
-  private candidatesFor(table: ExtractedTable): ColumnCandidate[] {
+  private static candidatesFor(table: ExtractedTable): ColumnCandidate[] {
     const columnCount = Math.max(0, ...table.rows.map((r) => r.length));
     const candidates: ColumnCandidate[] = [];
 

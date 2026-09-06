@@ -5,9 +5,6 @@ import { tmpdir } from 'node:os';
 import { Test } from '@nestjs/testing';
 import { ChartPipelineService } from '../../src/core/chart-pipeline.service';
 import { PageFetcherService } from '../../src/core/fetcher/page-fetcher.service';
-import { TableParserService } from '../../src/core/parser/table-parser.service';
-import { NumericColumnSelectorService } from '../../src/core/parser/numeric-column-selector.service';
-import { SvgChartRenderer } from '../../src/core/chart/svg-chart.renderer';
 import { PngWriterService } from '../../src/core/chart/png-writer.service';
 import { PipelineResult } from '../../src/core/chart-pipeline.service';
 
@@ -29,9 +26,6 @@ defineFeature(feature, (test) => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         ChartPipelineService,
-        TableParserService,
-        NumericColumnSelectorService,
-        SvgChartRenderer,
         PngWriterService,
         { provide: PageFetcherService, useValue: fetcher },
       ],

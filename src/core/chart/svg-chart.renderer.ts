@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { NumericSeries } from '../models/table.model';
 
 export interface ChartOptions {
@@ -13,10 +12,11 @@ const DEFAULTS: ChartOptions = { width: 900, height: 500, title: 'Numeric column
  * Renders a {@link NumericSeries} into a standalone SVG line-chart string.
  * Pure and dependency-free (no canvas/DOM), so it is deterministic to test;
  * PNG rasterisation is separate ({@link PngWriterService}).
+ *
+ * Pure and stateless, so it is a static utility class (no DI needed).
  */
-@Injectable()
 export class SvgChartRenderer {
-  render(series: NumericSeries, options: Partial<ChartOptions> = {}): string {
+  static render(series: NumericSeries, options: Partial<ChartOptions> = {}): string {
     const opts = {
       ...DEFAULTS,
       ...options,
@@ -65,7 +65,7 @@ export class SvgChartRenderer {
   }
 
   /** Build horizontal grid lines + y-axis value labels. */
-  private buildYAxis(
+  private static buildYAxis(
     min: number,
     max: number,
     left: number,
@@ -87,12 +87,12 @@ export class SvgChartRenderer {
     return parts.join('');
   }
 
-  private formatTick(value: number): string {
+  private static formatTick(value: number): string {
     return Number.isInteger(value) ? String(value) : value.toFixed(2);
   }
 
   /** Escape the few characters that would break XML text content. */
-  private escape(text: string): string {
+  private static escape(text: string): string {
     return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 }

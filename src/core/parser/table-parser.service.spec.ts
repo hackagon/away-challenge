@@ -1,12 +1,6 @@
 import { TableParserService } from './table-parser.service';
 
 describe('TableParserService', () => {
-  let service: TableParserService;
-
-  beforeEach(() => {
-    service = new TableParserService();
-  });
-
   it('extracts headers and rows from a wikitable', () => {
     const html = `
       <table class="wikitable">
@@ -15,7 +9,7 @@ describe('TableParserService', () => {
         <tr><td>1.90 m</td><td>Mary Roe</td></tr>
       </table>`;
 
-    const [table] = service.parse(html);
+    const [table] = TableParserService.parse(html);
     expect(table.headers).toEqual(['Height', 'Athlete']);
     expect(table.rows).toEqual([
       ['1.85 m', 'Jane Doe'],
@@ -25,25 +19,25 @@ describe('TableParserService', () => {
 
   it('collapses whitespace inside cells', () => {
     const html = `<table><tr><td>  1.85\n   m </td></tr></table>`;
-    const [table] = service.parse(html);
+    const [table] = TableParserService.parse(html);
     expect(table.rows[0][0]).toBe('1.85 m');
   });
 
   it('returns an empty array when there are no tables', () => {
-    expect(service.parse('<p>no tables here</p>')).toEqual([]);
+    expect(TableParserService.parse('<p>no tables here</p>')).toEqual([]);
   });
 
   it('parses multiple tables', () => {
     const html = `
       <table><tr><td>1</td></tr></table>
       <table><tr><td>2</td></tr></table>`;
-    expect(service.parse(html)).toHaveLength(2);
+    expect(TableParserService.parse(html)).toHaveLength(2);
   });
 
   it('strips inline <style>/<script> leaked into a cell', () => {
     const html = `
       <table><tr><td>1.482 m<style>.frac{font-size:80%}</style></td></tr></table>`;
-    const [table] = service.parse(html);
+    const [table] = TableParserService.parse(html);
     expect(table.rows[0][0]).toBe('1.482 m');
   });
 
@@ -57,7 +51,7 @@ describe('TableParserService', () => {
         <tr><td>Bob</td></tr>
         <tr><td>1.90</td><td>Carol</td></tr>
       </table>`;
-    const [table] = service.parse(html);
+    const [table] = TableParserService.parse(html);
     expect(table.rows).toEqual([
       ['1.85', 'Alice'],
       ['1.85', 'Bob'],
@@ -71,7 +65,7 @@ describe('TableParserService', () => {
         <tr><td colspan="2">wide</td><td>3</td></tr>
         <tr><td>a</td><td>b</td><td>c</td></tr>
       </table>`;
-    const [table] = service.parse(html);
+    const [table] = TableParserService.parse(html);
     expect(table.rows[0]).toEqual(['wide', 'wide', '3']);
     expect(table.rows[1]).toEqual(['a', 'b', 'c']);
   });

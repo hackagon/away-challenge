@@ -2,12 +2,6 @@ import { NumericColumnSelectorService } from './numeric-column-selector.service'
 import { ExtractedTable } from '../models/table.model';
 
 describe('NumericColumnSelectorService', () => {
-  let service: NumericColumnSelectorService;
-
-  beforeEach(() => {
-    service = new NumericColumnSelectorService();
-  });
-
   it('picks the numeric column and ignores text columns', () => {
     const table: ExtractedTable = {
       headers: ['Athlete', 'Height', 'Year'],
@@ -18,7 +12,7 @@ describe('NumericColumnSelectorService', () => {
       ],
     };
 
-    const series = service.select([table]);
+    const series = NumericColumnSelectorService.select([table]);
     // "Height" and "Year" are both numeric with 3 points each; the tie is
     // broken by ratio (both 1.0), so the first numeric column ("Height") wins.
     expect(series.label).toBe('Height');
@@ -35,7 +29,7 @@ describe('NumericColumnSelectorService', () => {
       rows: [['10'], ['20'], ['30'], ['40']],
     };
 
-    const series = service.select([small, large]);
+    const series = NumericColumnSelectorService.select([small, large]);
     expect(series.label).toBe('W');
     expect(series.values).toEqual([10, 20, 30, 40]);
   });
@@ -46,7 +40,7 @@ describe('NumericColumnSelectorService', () => {
       rows: [['5'], ['6'], ['7']],
     };
 
-    const series = service.select([table]);
+    const series = NumericColumnSelectorService.select([table]);
     expect(series.label).toBe('Column 1');
     expect(series.values).toEqual([5, 6, 7]);
   });
@@ -60,6 +54,6 @@ describe('NumericColumnSelectorService', () => {
       ],
     };
 
-    expect(() => service.select([table])).toThrow(/No numeric column/);
+    expect(() => NumericColumnSelectorService.select([table])).toThrow(/No numeric column/);
   });
 });
