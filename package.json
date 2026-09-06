@@ -1,0 +1,63 @@
+{
+  "name": "wiki-table-charter",
+  "version": "1.0.0",
+  "description": "CLI that reads a Wikipedia page, finds a table, detects a numeric column and plots it to a PNG image.",
+  "author": "Pho Nghia Van (Viktor)",
+  "license": "MIT",
+  "bin": {
+    "wiki-chart": "dist/main.js"
+  },
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "chart": "ts-node -r tsconfig-paths/register src/main.ts chart",
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.4.0",
+    "@nestjs/core": "^10.4.0",
+    "cheerio": "^1.0.0",
+    "nest-commander": "^3.15.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@nestjs/schematics": "^10.2.0",
+    "@nestjs/testing": "^10.4.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^22.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "jest": "^29.7.0",
+    "jest-cucumber": "^4.5.0",
+    "prettier": "^3.3.3",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.4"
+  },
+  "jest": {
+    "moduleFileExtensions": ["js", "json", "ts"],
+    "rootDir": ".",
+    "roots": ["<rootDir>/src", "<rootDir>/test"],
+    "testRegex": ".*\\.(spec|steps)\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": ["src/**/*.(t|j)s"],
+    "coveragePathIgnorePatterns": ["main.ts", "app.module.ts", ".module.ts$"],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@app/(.*)$": "<rootDir>/src/$1"
+    }
+  }
+}
