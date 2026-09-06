@@ -35,6 +35,22 @@ describe('parseNumericCell', () => {
     expect(parseNumericCell('2,050 kg')).toBe(2050);
   });
 
+  it('converts H:MM:SS durations to seconds', () => {
+    expect(parseNumericCell('2:55:18')).toBe(2 * 3600 + 55 * 60 + 18);
+  });
+
+  it('converts M:SS durations to seconds', () => {
+    expect(parseNumericCell('10:00')).toBe(600);
+  });
+
+  it('converts M:SS.ff durations with a fraction', () => {
+    expect(parseNumericCell('3:43.13')).toBeCloseTo(223.13, 2);
+  });
+
+  it('leaves plain decimal times (no colon) as-is', () => {
+    expect(parseNumericCell('9.58')).toBe(9.58);
+  });
+
   it('returns null for non-numeric text', () => {
     expect(parseNumericCell('Berlin')).toBeNull();
   });
