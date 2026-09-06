@@ -14,3 +14,9 @@ Feature: Chart a numeric column from a web page table
     Given a page whose only table has no numeric columns
     When I run the chart pipeline for that page
     Then the pipeline reports that no numeric column was found
+
+  Scenario: Choosing a specific column to plot
+    Given a page with "Year", "Wins" and "Losses" numeric columns
+    When I run the chart pipeline selecting the "Wins" column
+    Then a PNG image file is produced
+    And the chosen column is "Wins"

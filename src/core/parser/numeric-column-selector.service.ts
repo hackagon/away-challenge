@@ -14,17 +14,25 @@ interface ColumnCandidate {
 }
 
 /**
- * Picks the numeric column with the most parseable values across all tables
- * (ties broken by the higher ratio). See SOLUTION.md for the heuristic.
+ * Picks a numeric column to plot. By default it auto-detects the column with
+ * the most parseable values across all tables (ties broken by the higher
+ * ratio). A caller may instead name a column to override the heuristic.
+ * See SOLUTION.md for details.
  *
  * Pure and stateless, so it is a static utility class (no DI needed).
  */
 export class NumericColumnSelectorService {
   /**
-   * @throws Error when no column across any table is sufficiently numeric.
+   * @param requestedColumn optional header to match (case-insensitive); when
+   *   given, that column is used even if it is not the "most numeric".
+   * @throws Error when no suitable numeric column is found.
    */
-  static select(tables: ExtractedTable[]): NumericSeries {
+  static select(tables: ExtractedTable[], requestedColumn?: string): NumericSeries {
     const candidates = tables.flatMap((table) => this.candidatesFor(table));
+
+    if (requestedColumn) {
+      return this.selectByName(candidates, requestedColumn);
+    }
 
     const viable = candidates.filter(
       (c) => c.values.length >= MIN_POINTS && c.ratio >= NUMERIC_RATIO_THRESHOLD,
@@ -41,6 +49,33 @@ export class NumericColumnSelectorService {
 
     const best = viable[0];
     return { label: best.label, values: best.values };
+  }
+
+  /**
+   * Resolve an explicitly requested column. Matches the header case-insensitively
+   * (exact first, then substring). The ratio threshold is waived — the caller
+   * asked for this column — but it must still hold at least {@link MIN_POINTS}
+   * numeric values to be plottable.
+   */
+  private static selectByName(candidates: ColumnCandidate[], requested: string): NumericSeries {
+    const norm = requested.trim().toLowerCase();
+    const exact = candidates.filter((c) => c.label.toLowerCase() === norm);
+    const matched =
+      exact.length > 0 ? exact : candidates.filter((c) => c.label.toLowerCase().includes(norm));
+
+    const plottable = matched.filter((c) => c.values.length >= MIN_POINTS);
+    if (plottable.length === 0) {
+      const available = [
+        ...new Set(candidates.filter((c) => c.values.length >= MIN_POINTS).map((c) => c.label)),
+      ];
+      throw new Error(
+        `Column "${requested}" not found or not numeric. ` +
+          `Available numeric columns: ${available.join(', ') || '(none)'}.`,
+      );
+    }
+
+    plottable.sort((a, b) => b.values.length - a.values.length || b.ratio - a.ratio);
+    return { label: plottable[0].label, values: plottable[0].values };
   }
 
   /** Build one candidate per column of a single table. */

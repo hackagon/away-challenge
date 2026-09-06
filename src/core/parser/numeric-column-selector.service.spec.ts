@@ -56,4 +56,35 @@ describe('NumericColumnSelectorService', () => {
 
     expect(() => NumericColumnSelectorService.select([table])).toThrow(/No numeric column/);
   });
+
+  describe('with an explicitly requested column', () => {
+    const table: ExtractedTable = {
+      headers: ['Year', 'Wins', 'Losses'],
+      rows: [
+        ['1990', '30', '20'],
+        ['1991', '45', '10'],
+        ['1992', '25', '30'],
+      ],
+    };
+
+    it('uses the named column even when another has as many points', () => {
+      const series = NumericColumnSelectorService.select([table], 'Wins');
+      expect(series.label).toBe('Wins');
+      expect(series.values).toEqual([30, 45, 25]);
+    });
+
+    it('matches the header case-insensitively', () => {
+      expect(NumericColumnSelectorService.select([table], 'losses').label).toBe('Losses');
+    });
+
+    it('matches on a substring when there is no exact match', () => {
+      expect(NumericColumnSelectorService.select([table], 'Loss').label).toBe('Losses');
+    });
+
+    it('throws with the list of available columns when not found', () => {
+      expect(() => NumericColumnSelectorService.select([table], 'Points')).toThrow(
+        /Available numeric columns: Year, Wins, Losses/,
+      );
+    });
+  });
 });

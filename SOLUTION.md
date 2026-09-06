@@ -51,7 +51,16 @@ Without hard-coding column names, the selector:
    higher numeric ratio (the "cleaner" column).
 
 This is a pragmatic heuristic that works well for record-progression / statistics
-tables without any page-specific configuration.
+tables without any page-specific configuration. To override it, pass
+`-c/--column <name>` — the column is matched by header (case-insensitive, exact
+then substring) and used even if it isn't the "most numeric"; if it can't be
+found the error lists the available numeric columns.
+
+### Output naming
+
+With no `-o`, the output file is named after the page (from the URL's last path
+segment), e.g. `output/Marathon_world_record_progression.png`, and the chart is
+titled `"<page> — <column>"`. Both come from `page-name.util.ts`.
 
 ### Handling real-world HTML messiness
 
@@ -127,8 +136,6 @@ Kept intentionally simple for the time box. With more time:
 
 - **Chart type / X axis:** detect a date or label column and use it for the X
   axis and tooltips, instead of a positional index.
-- **Column selection UX:** print the candidate columns and let the user pick one
-  with a flag (`--column "Mark"`), rather than always auto-selecting.
 - **Chart library:** swap the hand-rolled SVG for Vega-Lite or Chart.js for
   richer styling — isolated behind `SvgChartRenderer`, so nothing else changes.
 - **Resilience:** retries/timeouts on fetch; polite rate limiting.

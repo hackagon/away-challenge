@@ -100,4 +100,29 @@ defineFeature(feature, (test) => {
       expect(error?.message).toMatch(/No numeric column/);
     });
   });
+
+  test('Choosing a specific column to plot', ({ given, when, then, and }) => {
+    given(/a page with .* numeric columns/, () => {
+      fetcher.fetchHtml.mockResolvedValue(`
+        <table class="wikitable">
+          <tr><th>Year</th><th>Wins</th><th>Losses</th></tr>
+          <tr><td>1990</td><td>30</td><td>20</td></tr>
+          <tr><td>1991</td><td>45</td><td>10</td></tr>
+          <tr><td>1992</td><td>25</td><td>30</td></tr>
+        </table>`);
+    });
+
+    when(/I run the chart pipeline selecting the "(.*)" column/, async (column: string) => {
+      result = await pipeline.generate('https://example.test/teams', outputPath, { column });
+    });
+
+    then('a PNG image file is produced', async () => {
+      const buffer = await readFile(result.outputPath);
+      expect(buffer.subarray(0, 4).toString('hex')).toBe('89504e47');
+    });
+
+    and(/the chosen column is "(.*)"/, (column: string) => {
+      expect(result.label).toBe(column);
+    });
+  });
 });

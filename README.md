@@ -31,11 +31,22 @@ Run directly from TypeScript (no build step needed):
 npm run chart -- "https://en.wikipedia.org/wiki/Women%27s_high_jump_world_record_progression"
 ```
 
-This writes `output/chart.png`. Choose the output path with `-o`:
+By default the output is named after the page, e.g.
+`output/Women's_high_jump_world_record_progression.png`. Override the path with
+`-o`:
 
 ```bash
 npm run chart -- "https://en.wikipedia.org/wiki/List_of_tallest_buildings" -o buildings.png
 ```
+
+The tool auto-detects the numeric column. To plot a specific one, pass
+`-c/--column` (matched by header, case-insensitive):
+
+```bash
+npm run chart -- "https://en.wikipedia.org/wiki/All-time_Olympic_Games_medal_table" -c "Gold"
+```
+
+If the column isn't found, the error lists the available numeric columns.
 
 Or build once and run the compiled CLI:
 

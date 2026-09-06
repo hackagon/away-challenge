@@ -1,16 +1,17 @@
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { Logger } from '@nestjs/common';
 import { ChartPipelineService } from '../core/chart-pipeline.service';
+import { slugFromUrl } from '../core/page-name.util';
 
 interface ChartCommandOptions {
-  output: string;
+  output?: string;
+  column?: string;
 }
 
-const DEFAULT_OUTPUT = 'output/chart.png';
-
 /**
- * `chart <url> [-o output.png]` — thin CLI layer: validate input, delegate to
- * {@link ChartPipelineService}, map success/failure to output and exit codes.
+ * `chart <url> [-o output.png] [-c column]` — thin CLI layer: validate input,
+ * delegate to {@link ChartPipelineService}, map success/failure to output and
+ * exit codes.
  */
 @Command({
   name: 'chart',
@@ -26,7 +27,6 @@ export class ChartCommand extends CommandRunner {
 
   async run(inputs: string[], options: ChartCommandOptions): Promise<void> {
     const [url] = inputs;
-    const output = options.output ?? DEFAULT_OUTPUT;
 
     if (!this.isValidUrl(url)) {
       this.logger.error(`"${url}" is not a valid http(s) URL.`);
@@ -34,8 +34,11 @@ export class ChartCommand extends CommandRunner {
       return;
     }
 
+    // Default the filename to the page name from the URL, e.g. output/Marathon_world_record_progression.png
+    const output = options.output ?? `output/${slugFromUrl(url)}.png`;
+
     try {
-      const result = await this.pipeline.generate(url, output);
+      const result = await this.pipeline.generate(url, output, { column: options.column });
       // console.log (not the logger) keeps the result line clean for scripts.
       console.log(
         `✔ Plotted "${result.label}" (${result.pointCount} points) → ${result.outputPath}`,
@@ -48,9 +51,17 @@ export class ChartCommand extends CommandRunner {
 
   @Option({
     flags: '-o, --output <path>',
-    description: `Output PNG path (default: ${DEFAULT_OUTPUT})`,
+    description: 'Output PNG path (default: output/<page-name>.png)',
   })
   parseOutput(value: string): string {
+    return value;
+  }
+
+  @Option({
+    flags: '-c, --column <name>',
+    description: 'Plot this column instead of auto-detecting (matched by header, case-insensitive)',
+  })
+  parseColumn(value: string): string {
     return value;
   }
 
